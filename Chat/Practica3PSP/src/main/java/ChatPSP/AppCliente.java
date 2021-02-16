@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.io.*;
 import ChatPSP.Leer;
 
+/**  */
 public class AppCliente {
 
   //Si introducimos un puerto o ip no valida, no nos escuchara la peticion
@@ -20,12 +21,12 @@ public class AppCliente {
       DataOutputStream salidAServer = new DataOutputStream(socketTcp.getOutputStream());
 
       String mensaje;
-
-      while ((mensaje = Leer.pedirCadena()) != "*") {
+ while ((mensaje = Leer.pedirCadena()) != "*") {
 
         salidAServer.writeUTF(mensaje);
         String mensajeDelServidor = entradAServer.readUTF();
-        System.out.println("Recibido mensaje del servidor: " + mensajeDelServidor);
+        System.out.
+     println("Recibido mensaje del servidor: " + mensajeDelServidor);
       } 
 
     } catch (Exception e) {
