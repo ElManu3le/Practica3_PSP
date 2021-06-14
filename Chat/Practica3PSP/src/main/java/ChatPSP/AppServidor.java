@@ -3,9 +3,8 @@ package ChatPSP;
 import java.io.*;
 import java.net.*;
 
-
-/** aceptar conexiones y lanzar hilos */
 public class AppServidor {
+  /** */
   static final int PUERTO = 4444;
   static final int MAXCONEX = 10;
 

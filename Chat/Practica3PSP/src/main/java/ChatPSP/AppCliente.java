@@ -1,12 +1,13 @@
 package ChatPSP;
 
-import java.net.*;
-import java.util.Scanner;
-import java.io.*;
-import ChatPSP.Leer;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
-/**  */
+
 public class AppCliente {
+/** */
 
   //Si introducimos un puerto o ip no valida, no nos escuchara la peticion
   static final String IP = "localhost";
