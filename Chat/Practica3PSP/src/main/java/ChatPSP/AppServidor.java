@@ -4,43 +4,23 @@ import java.io.*;
 import java.net.*;
 
 public class AppServidor {
-  /** */
-  static final int PUERTO = 4444;
-  static final int MAXCONEX = 10;
+  // VARIABLES
+	static final int puerto = 5555;
+	private static final int conexionesMax = 10;
 
-  public static void main(String[] args) throws IOException {
-    // Creamos el servidor
+	public static void main(String[] args) throws IOException {
+		ServerSocket serverSocket = new ServerSocket(puerto);
+		System.out.println("Escuchando en el puerto " + puerto);
 
-    try (ServerSocket servidor = new ServerSocket(PUERTO)) {
-      System.out.println("Iniciando el servidor en el puerto  " + PUERTO + " ...");
+		ComunHilos comunhilos = new ComunHilos(conexionesMax);
+		while (true) {
+			Socket socket = serverSocket.accept();
+			AtiendeCliente hilosServidor = new AtiendeCliente(socket, comunhilos);
 
-      ComunHilos comunHilos = new ComunHilos(MAXCONEX);
-
-      while (true) {
-        // Esperamos a la primera petición de conexión que venga y la aceptamos
-        Socket socketTcp = servidor.accept();
-
-        AtiendeCliente atiendeCliente = new AtiendeCliente(socketTcp, comunHilos);
-
-        atiendeCliente.start();
-
-        // Obtenemos los canales de entrada y de salida de datos
-        System.out.println("El cliente se ha conectado al server ");
-        DataInputStream entrada = new DataInputStream(socketTcp.getInputStream());
-        DataOutputStream salida = new DataOutputStream(socketTcp.getOutputStream());
-
-        // Leemos un mensaje y devolvemos el mismo mensaje
-        String mensajeDelCliente = entrada.readUTF();
-        System.out.println("Recibido mensaje del cliente: " + mensajeDelCliente);
-        salida.writeUTF("Tú si que eres " + mensajeDelCliente);
-
-       
-      }
-
-    } catch (Exception e) {
-      // TODO: handle exception
-    }
-
-  }
+			comunhilos.anadirCliente(socket);
+			hilosServidor.start();
+			System.out.println("Hay un nuevo cliente");
+		}
+	}
 
 }

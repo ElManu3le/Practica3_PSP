@@ -1,38 +1,32 @@
 package ChatPSP;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
-
 public class AppCliente {
-/** */
-
-  //Si introducimos un puerto o ip no valida, no nos escuchara la peticion
-  static final String IP = "localhost";
-  static final int PUERTO = 4444;
+  // VARIABLES
+  static final String ip = "localhost";
+  static final int puerto = 5555;
 
   public static void main(String[] args) throws IOException {
+    // VARIABLES
+    Socket miSocket = new Socket(ip, puerto);
+    DataOutputStream salida = new DataOutputStream(miSocket.getOutputStream());
+    AtiendeServidor hiloCliente = new AtiendeServidor(miSocket);
+    String mensajeQueEscribeElCliente = "";
+    String nombreUsuario = "";
 
-    /** Hacemos un try para comprobar que hicimos la conexion con el servidor */
-    try (Socket socketTcp = new Socket(IP, PUERTO)) {
-
-      DataInputStream entradAServer = new DataInputStream(socketTcp.getInputStream());
-      DataOutputStream salidAServer = new DataOutputStream(socketTcp.getOutputStream());
-
-      String mensaje;
- while ((mensaje = Leer.pedirCadena()) != "*") {
-
-        salidAServer.writeUTF(mensaje);
-        String mensajeDelServidor = entradAServer.readUTF();
-        System.out.
-     println("Recibido mensaje del servidor: " + mensajeDelServidor);
-      } 
-
-    } catch (Exception e) {
-      System.err.println("error => " + e.getMessage());
+    hiloCliente.start();
+    while (!mensajeQueEscribeElCliente.equals("*")) {
+      if (nombreUsuario.equals("")) {
+        System.out.println("Nombre de usuario");
+        nombreUsuario = Leer.pedirCadena();
+        salida.writeUTF(mensajeQueEscribeElCliente);
+      } else {
+        mensajeQueEscribeElCliente = Leer.pedirCadena();
+        salida.writeUTF(nombreUsuario + ": " + mensajeQueEscribeElCliente);
+      }
     }
-
+    System.exit(0);
   }
 }
