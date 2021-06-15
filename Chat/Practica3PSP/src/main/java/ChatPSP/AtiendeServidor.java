@@ -4,7 +4,27 @@ import java.net.Socket;
 import java.io.*;
 
 public class AtiendeServidor extends Thread {
-    // VARIABLES
+
+	private Socket sc;
+
+    public AtiendeServidor(Socket sc) {
+        this.sc = sc;
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (true) {
+                DataInputStream in = new DataInputStream(sc.getInputStream());
+                System.out.println(in.readUTF());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+	// VARIABLES
 	private Socket socket;
 	private DataOutputStream salida;
 
@@ -26,6 +46,7 @@ public class AtiendeServidor extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
+
     
 }
